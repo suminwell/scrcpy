@@ -65,6 +65,12 @@ else
         conf+=(
             --host="$HOST_TRIPLET"
         )
+
+        # For ARM64 Linux cross-compilation, set PKG_CONFIG_LIBDIR to find ARM64 libraries
+        if [[ "$HOST" == linux-arm64 ]]
+        then
+            export PKG_CONFIG_LIBDIR="/usr/lib/aarch64-linux-gnu/pkgconfig:/usr/share/pkgconfig"
+        fi
     fi
 
     "$SOURCES_DIR/$PROJECT_DIR"/configure "${conf[@]}"

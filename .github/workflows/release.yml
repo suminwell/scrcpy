@@ -132,10 +132,26 @@ jobs:
       - name: Install dependencies
         run: |
           sudo dpkg --add-architecture arm64
+          # Configure ARM64 package sources
+          sudo sed -i 's/^deb /deb [arch=amd64] /' /etc/apt/sources.list
+          echo "deb [arch=arm64] http://ports.ubuntu.com/ubuntu-ports $(lsb_release -sc) main universe multiverse" | sudo tee -a /etc/apt/sources.list
+          echo "deb [arch=arm64] http://ports.ubuntu.com/ubuntu-ports $(lsb_release -sc)-updates main universe multiverse" | sudo tee -a /etc/apt/sources.list
+          echo "deb [arch=arm64] http://ports.ubuntu.com/ubuntu-ports $(lsb_release -sc)-security main universe multiverse" | sudo tee -a /etc/apt/sources.list
           sudo apt update
           sudo apt install -y meson ninja-build nasm \
              gcc-aarch64-linux-gnu g++-aarch64-linux-gnu \
-             pkg-config libv4l-dev:arm64
+             pkg-config \
+             libv4l-dev:arm64 \
+             libwayland-dev:arm64 \
+             libxkbcommon-dev:arm64 \
+             libx11-dev:arm64 \
+             libxext-dev:arm64 \
+             libxrandr-dev:arm64 \
+             libxcursor-dev:arm64 \
+             libxi-dev:arm64 \
+             libxinerama-dev:arm64 \
+             libxxf86vm-dev:arm64 \
+             libxss-dev:arm64
 
       - name: Build
         run: release/build_linux.sh arm64

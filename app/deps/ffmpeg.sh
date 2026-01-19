@@ -136,6 +136,8 @@ else
                     --target-os=linux
                     --arch=aarch64
                 )
+                # Set PKG_CONFIG_LIBDIR to find ARM64 libraries (for libv4l2)
+                export PKG_CONFIG_LIBDIR="/usr/lib/aarch64-linux-gnu/pkgconfig:/usr/share/pkgconfig"
                 ;;
 
             *)
