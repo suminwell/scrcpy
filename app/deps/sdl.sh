@@ -39,7 +39,7 @@ else
         --prefix="$INSTALL_DIR/$DIRNAME"
     )
 
-    if [[ "$HOST" == linux ]]
+    if [[ "$HOST" == linux || "$HOST" == linux-arm64 ]]
     then
         conf+=(
             --enable-video-wayland

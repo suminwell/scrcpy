@@ -81,7 +81,7 @@ else
         --enable-muxer=wav
     )
 
-    if [[ "$HOST" == linux ]]
+    if [[ "$HOST" == linux || "$HOST" == linux-arm64 ]]
     then
         conf+=(
             --enable-libv4l2
@@ -128,6 +128,13 @@ else
                 conf+=(
                     --target-os=mingw32
                     --arch=x86_64
+                )
+                ;;
+
+            linux-arm64)
+                conf+=(
+                    --target-os=linux
+                    --arch=aarch64
                 )
                 ;;
 

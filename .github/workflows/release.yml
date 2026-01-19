@@ -131,12 +131,11 @@ jobs:
 
       - name: Install dependencies
         run: |
+          sudo dpkg --add-architecture arm64
           sudo apt update
-          sudo apt install -y meson ninja-build nasm ffmpeg libsdl2-2.0-0 \
-             libsdl2-dev libavcodec-dev libavdevice-dev libavformat-dev \
-             libavutil-dev libswresample-dev libusb-1.0-0 libusb-1.0-0-dev \
-             libv4l-dev gcc-aarch64-linux-gnu g++-aarch64-linux-gnu \
-             pkg-config
+          sudo apt install -y meson ninja-build nasm \
+             gcc-aarch64-linux-gnu g++-aarch64-linux-gnu \
+             pkg-config libv4l-dev:arm64
 
       - name: Build
         run: release/build_linux.sh arm64

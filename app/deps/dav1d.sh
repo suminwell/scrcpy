@@ -55,6 +55,13 @@ else
                 )
                 ;;
 
+            linux-arm64)
+                # Use the cross-compilation file from the project root
+                conf+=(
+                    --cross-file="$DEPS_DIR/../cross_linux_arm64.txt"
+                )
+                ;;
+
             *)
                 echo "Unsupported host: $HOST" >&2
                 exit 1
