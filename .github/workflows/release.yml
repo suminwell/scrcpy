@@ -586,3 +586,14 @@ jobs:
         with:
           name: scrcpy-release-${{ env.VERSION }}
           path: release/output
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ env.VERSION }}
+          name: scrcpy ${{ env.VERSION }}
+          draft: false
+          prerelease: false
+          files: release/output/*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
