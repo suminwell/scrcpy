@@ -13,26 +13,56 @@ fi
 ARCH="$1"
 LINUX_BUILD_DIR="$WORK_DIR/build-linux-$ARCH"
 
-app/deps/adb_linux.sh
-app/deps/sdl.sh linux native static
-app/deps/dav1d.sh linux native static
-app/deps/ffmpeg.sh linux native static
-app/deps/libusb.sh linux native static
+# Determine build type based on architecture
+if [[ "$ARCH" == "arm64" ]]; then
+    BUILD_TYPE="cross"
+    HOST="linux-arm64"
 
-DEPS_INSTALL_DIR="$PWD/app/deps/work/install/linux-native-static"
-ADB_INSTALL_DIR="$PWD/app/deps/work/install/adb-linux"
+    app/deps/adb_linux.sh
+    app/deps/sdl.sh "$HOST" cross static
+    app/deps/dav1d.sh "$HOST" cross static
+    app/deps/ffmpeg.sh "$HOST" cross static
+    app/deps/libusb.sh "$HOST" cross static
 
-rm -rf "$LINUX_BUILD_DIR"
-meson setup "$LINUX_BUILD_DIR" \
-    --pkg-config-path="$DEPS_INSTALL_DIR/lib/pkgconfig" \
-    -Dc_args="-I$DEPS_INSTALL_DIR/include" \
-    -Dc_link_args="-L$DEPS_INSTALL_DIR/lib" \
-    --buildtype=release \
-    --strip \
-    -Db_lto=true \
-    -Dcompile_server=false \
-    -Dportable=true \
-    -Dstatic=true
+    DEPS_INSTALL_DIR="$PWD/app/deps/work/install/linux-arm64-cross-static"
+    ADB_INSTALL_DIR="$PWD/app/deps/work/install/adb-linux"
+
+    rm -rf "$LINUX_BUILD_DIR"
+    meson setup "$LINUX_BUILD_DIR" \
+        --cross-file=cross_linux_arm64.txt \
+        --pkg-config-path="$DEPS_INSTALL_DIR/lib/pkgconfig" \
+        -Dc_args="-I$DEPS_INSTALL_DIR/include" \
+        -Dc_link_args="-L$DEPS_INSTALL_DIR/lib" \
+        --buildtype=release \
+        --strip \
+        -Db_lto=true \
+        -Dcompile_server=false \
+        -Dportable=true \
+        -Dstatic=true
+else
+    BUILD_TYPE="native"
+
+    app/deps/adb_linux.sh
+    app/deps/sdl.sh linux native static
+    app/deps/dav1d.sh linux native static
+    app/deps/ffmpeg.sh linux native static
+    app/deps/libusb.sh linux native static
+
+    DEPS_INSTALL_DIR="$PWD/app/deps/work/install/linux-native-static"
+    ADB_INSTALL_DIR="$PWD/app/deps/work/install/adb-linux"
+
+    rm -rf "$LINUX_BUILD_DIR"
+    meson setup "$LINUX_BUILD_DIR" \
+        --pkg-config-path="$DEPS_INSTALL_DIR/lib/pkgconfig" \
+        -Dc_args="-I$DEPS_INSTALL_DIR/include" \
+        -Dc_link_args="-L$DEPS_INSTALL_DIR/lib" \
+        --buildtype=release \
+        --strip \
+        -Db_lto=true \
+        -Dcompile_server=false \
+        -Dportable=true \
+        -Dstatic=true
+fi
 ninja -C "$LINUX_BUILD_DIR"
 
 # Group intermediate outputs into a 'dist' directory
