@@ -35,6 +35,9 @@ process_args() {
         elif [[ "$HOST" = win64 ]]
         then
             HOST_TRIPLET=x86_64-w64-mingw32
+        elif [[ "$HOST" = linux-arm64 ]]
+        then
+            HOST_TRIPLET=aarch64-linux-gnu
         else
             echo "Unsupported cross-build to host: $HOST" >&2
             exit 1
