@@ -17,14 +17,14 @@ ARCH="$1"
 TERMUX_BUILD_DIR="$WORK_DIR/build-termux-$ARCH"
 
 # Build dependencies using Android NDK
-app/deps/adb_linux.sh
+app/deps/adb_termux.sh $ARCH
 app/deps/sdl.sh termux-$ARCH cross static
 app/deps/dav1d.sh termux-$ARCH cross static
 app/deps/ffmpeg.sh termux-$ARCH cross static
 app/deps/libusb.sh termux-$ARCH cross static
 
 DEPS_INSTALL_DIR="$PWD/app/deps/work/install/termux-$ARCH-cross-static"
-ADB_INSTALL_DIR="$PWD/app/deps/work/install/adb-linux"
+ADB_INSTALL_DIR="$PWD/app/deps/work/install/adb-termux-$ARCH"
 
 rm -rf "$TERMUX_BUILD_DIR"
 meson setup "$TERMUX_BUILD_DIR" \
