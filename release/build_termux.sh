@@ -37,7 +37,8 @@ meson setup "$TERMUX_BUILD_DIR" \
     -Db_lto=true \
     -Dcompile_server=false \
     -Dportable=true \
-    -Dstatic=true
+    -Dstatic=true \
+    -Dv4l2=false
 ninja -C "$TERMUX_BUILD_DIR"
 
 # Group intermediate outputs into a 'dist' directory
