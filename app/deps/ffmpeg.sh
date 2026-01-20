@@ -43,7 +43,12 @@ else
         export PKG_CONFIG_PATH="/opt/homebrew/opt/zlib/lib/pkgconfig"
     fi
 
-    export PKG_CONFIG_PATH="$INSTALL_DIR/$DIRNAME/lib/pkgconfig:$PKG_CONFIG_PATH"
+    # For non-ARM64 Linux builds, set PKG_CONFIG_PATH
+    # For ARM64 Linux, we'll use PKG_CONFIG_LIBDIR instead (see below)
+    if [[ "$HOST" != "linux-arm64" ]]
+    then
+        export PKG_CONFIG_PATH="$INSTALL_DIR/$DIRNAME/lib/pkgconfig:$PKG_CONFIG_PATH"
+    fi
 
     conf=(
         --prefix="$INSTALL_DIR/$DIRNAME"
@@ -136,18 +141,11 @@ else
                     --target-os=linux
                     --arch=aarch64
                 )
-                # Set PKG_CONFIG_LIBDIR to find ARM64 libraries (for libv4l2)
-                # Also include our install directory for dav1d
+                # For ARM64 cross-compilation, use PKG_CONFIG_LIBDIR to specify all search paths
+                # This includes both our compiled dependencies (dav1d) and system ARM64 libraries (libv4l2)
+                # Note: When PKG_CONFIG_LIBDIR is set, PKG_CONFIG_PATH is ignored, so we must include
+                # all paths in PKG_CONFIG_LIBDIR
                 export PKG_CONFIG_LIBDIR="$INSTALL_DIR/$DIRNAME/lib/pkgconfig:/usr/lib/aarch64-linux-gnu/pkgconfig:/usr/share/pkgconfig"
-
-                # Debug: Check if dav1d.pc exists
-                echo "=== Checking for dav1d.pc ==="
-                echo "PKG_CONFIG_LIBDIR=$PKG_CONFIG_LIBDIR"
-                echo "Looking for dav1d.pc in:"
-                ls -la "$INSTALL_DIR/$DIRNAME/lib/pkgconfig/" || echo "Directory does not exist"
-                echo "Trying pkg-config:"
-                pkg-config --exists dav1d && echo "dav1d found by pkg-config" || echo "dav1d NOT found by pkg-config"
-                pkg-config --modversion dav1d || echo "Cannot get dav1d version"
                 ;;
 
             *)

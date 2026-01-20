@@ -73,11 +73,3 @@ fi
 
 ninja
 ninja install
-
-# Debug: List installed files
-echo "=== dav1d installed files ==="
-ls -la "$INSTALL_DIR/$DIRNAME/"
-echo "=== dav1d lib directory ==="
-ls -la "$INSTALL_DIR/$DIRNAME/lib/" || true
-echo "=== dav1d pkgconfig directory ==="
-ls -la "$INSTALL_DIR/$DIRNAME/lib/pkgconfig/" || true
