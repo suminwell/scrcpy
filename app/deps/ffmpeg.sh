@@ -137,7 +137,8 @@ else
                     --arch=aarch64
                 )
                 # Set PKG_CONFIG_LIBDIR to find ARM64 libraries (for libv4l2)
-                export PKG_CONFIG_LIBDIR="/usr/lib/aarch64-linux-gnu/pkgconfig:/usr/share/pkgconfig"
+                # Also include our install directory for dav1d
+                export PKG_CONFIG_LIBDIR="$INSTALL_DIR/$DIRNAME/lib/pkgconfig:/usr/lib/aarch64-linux-gnu/pkgconfig:/usr/share/pkgconfig"
                 ;;
 
             *)
