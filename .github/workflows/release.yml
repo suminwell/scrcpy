@@ -133,10 +133,22 @@ jobs:
         run: |
           sudo dpkg --add-architecture arm64
           # Configure ARM64 package sources
-          sudo sed -i 's/^deb /deb [arch=amd64] /' /etc/apt/sources.list
-          echo "deb [arch=arm64] http://ports.ubuntu.com/ubuntu-ports $(lsb_release -sc) main universe multiverse" | sudo tee -a /etc/apt/sources.list
-          echo "deb [arch=arm64] http://ports.ubuntu.com/ubuntu-ports $(lsb_release -sc)-updates main universe multiverse" | sudo tee -a /etc/apt/sources.list
-          echo "deb [arch=arm64] http://ports.ubuntu.com/ubuntu-ports $(lsb_release -sc)-security main universe multiverse" | sudo tee -a /etc/apt/sources.list
+          # Remove all existing source files to avoid conflicts
+          sudo rm -f /etc/apt/sources.list.d/*.list /etc/apt/sources.list.d/*.sources
+          # Create new sources.list with architecture-specific entries
+          sudo tee /etc/apt/sources.list > /dev/null <<EOF
+          # AMD64 sources
+          deb [arch=amd64] http://archive.ubuntu.com/ubuntu/ $(lsb_release -sc) main restricted universe multiverse
+          deb [arch=amd64] http://archive.ubuntu.com/ubuntu/ $(lsb_release -sc)-updates main restricted universe multiverse
+          deb [arch=amd64] http://archive.ubuntu.com/ubuntu/ $(lsb_release -sc)-backports main restricted universe multiverse
+          deb [arch=amd64] http://security.ubuntu.com/ubuntu/ $(lsb_release -sc)-security main restricted universe multiverse
+
+          # ARM64 sources
+          deb [arch=arm64] http://ports.ubuntu.com/ubuntu-ports/ $(lsb_release -sc) main restricted universe multiverse
+          deb [arch=arm64] http://ports.ubuntu.com/ubuntu-ports/ $(lsb_release -sc)-updates main restricted universe multiverse
+          deb [arch=arm64] http://ports.ubuntu.com/ubuntu-ports/ $(lsb_release -sc)-backports main restricted universe multiverse
+          deb [arch=arm64] http://ports.ubuntu.com/ubuntu-ports/ $(lsb_release -sc)-security main restricted universe multiverse
+          EOF
           sudo apt update
           sudo apt install -y meson ninja-build nasm \
              gcc-aarch64-linux-gnu g++-aarch64-linux-gnu \
