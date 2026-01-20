@@ -89,6 +89,14 @@ else
         )
     fi
 
+    # Disable udev for Termux (Android doesn't have udev)
+    if [[ "$HOST" == termux-* ]]
+    then
+        conf+=(
+            --disable-udev
+        )
+    fi
+
     "$SOURCES_DIR/$PROJECT_DIR"/bootstrap.sh
     "$SOURCES_DIR/$PROJECT_DIR"/configure "${conf[@]}"
 fi
