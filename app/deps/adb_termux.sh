@@ -46,6 +46,12 @@ if [[ ! -f "$DEB_FILE" ]]; then
     wget "$DEB_URL"
 fi
 
+# Verify download succeeded
+if [[ ! -f "$DEB_FILE" ]]; then
+    echo "ERROR: Failed to download $DEB_FILE from $DEB_URL" >&2
+    exit 1
+fi
+
 # Extract .deb file
 EXTRACT_DIR="adb-termux-${ARCH}-extract"
 rm -rf "$EXTRACT_DIR"
@@ -65,7 +71,22 @@ mkdir -p "$INSTALL_DIR"
 
 # Copy adb binary (it's in data/data/com.termux/files/usr/bin/adb)
 # Put it directly in INSTALL_DIR, not in a bin/ subdirectory
-cp data/data/com.termux/files/usr/bin/adb "$INSTALL_DIR/"
+ADB_SOURCE="data/data/com.termux/files/usr/bin/adb"
+if [[ ! -f "$ADB_SOURCE" ]]; then
+    echo "ERROR: adb binary not found at $ADB_SOURCE" >&2
+    echo "Available files in data/data/com.termux/files/usr/bin/:" >&2
+    ls -la data/data/com.termux/files/usr/bin/ || true
+    exit 1
+fi
 
-echo "adb for Termux $ARCH extracted successfully to $INSTALL_DIR"
+cp "$ADB_SOURCE" "$INSTALL_DIR/"
+chmod +x "$INSTALL_DIR/adb"
+
+# Verify adb was copied successfully
+if [[ ! -f "$INSTALL_DIR/adb" ]]; then
+    echo "ERROR: Failed to copy adb to $INSTALL_DIR" >&2
+    exit 1
+fi
+
+echo "adb for Termux $ARCH extracted successfully to $INSTALL_DIR/adb"
 

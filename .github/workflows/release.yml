@@ -197,7 +197,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt update
-          sudo apt install -y meson ninja-build nasm pkg-config
+          sudo apt install -y meson ninja-build nasm pkg-config wget binutils xz-utils
 
       - name: Build
         run: release/build_termux.sh arm64
@@ -228,7 +228,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt update
-          sudo apt install -y meson ninja-build nasm pkg-config
+          sudo apt install -y meson ninja-build nasm pkg-config wget binutils xz-utils
 
       - name: Build
         run: release/build_termux.sh arm
@@ -259,7 +259,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt update
-          sudo apt install -y meson ninja-build nasm pkg-config
+          sudo apt install -y meson ninja-build nasm pkg-config wget binutils xz-utils
 
       - name: Build
         run: release/build_termux.sh x86_64
@@ -290,7 +290,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt update
-          sudo apt install -y meson ninja-build nasm pkg-config
+          sudo apt install -y meson ninja-build nasm pkg-config wget binutils xz-utils
 
       - name: Build
         run: release/build_termux.sh x86
