@@ -56,9 +56,9 @@ else
                 ;;
 
             linux-arm64)
-                # Use the cross-compilation file from the project root
+                # Use dav1d's built-in cross-compilation file
                 conf+=(
-                    --cross-file="$PROJECT_ROOT/cross_linux_arm64.txt"
+                    --cross-file="$SOURCES_DIR/$PROJECT_DIR/package/crossfiles/aarch64-linux.meson"
                 )
                 ;;
 
