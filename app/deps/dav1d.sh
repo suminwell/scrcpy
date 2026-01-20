@@ -58,7 +58,7 @@ else
             linux-arm64)
                 # Use the cross-compilation file from the project root
                 conf+=(
-                    --cross-file="$DEPS_DIR/../cross_linux_arm64.txt"
+                    --cross-file="$PROJECT_ROOT/cross_linux_arm64.txt"
                 )
                 ;;
 

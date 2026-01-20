@@ -55,6 +55,9 @@ SOURCES_DIR="$WORK_DIR/sources"
 BUILD_DIR="$WORK_DIR/build"
 INSTALL_DIR="$WORK_DIR/install"
 
+# Store absolute path to project root for cross-compilation files
+PROJECT_ROOT="$PWD/.."
+
 mkdir -p "$INSTALL_DIR" "$SOURCES_DIR" "$WORK_DIR"
 
 checksum() {
