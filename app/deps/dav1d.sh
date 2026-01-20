@@ -57,8 +57,11 @@ else
 
             linux-arm64)
                 # Use dav1d's built-in cross-compilation file
+                # Add Android/Termux TLS compatibility flags via Meson options
                 conf+=(
                     --cross-file="$SOURCES_DIR/$PROJECT_DIR/package/crossfiles/aarch64-linux.meson"
+                    -Dc_args="-ffunction-sections -fdata-sections"
+                    -Dc_link_args="-Wl,--gc-sections -Wl,-z,max-page-size=16384"
                 )
                 ;;
 

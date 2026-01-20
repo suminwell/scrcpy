@@ -8,8 +8,10 @@ strip = 'aarch64-linux-gnu-strip'
 pkg-config = 'pkg-config'
 
 [built-in options]
-c_link_args = ['-Wl,-z,max-page-size=16384']
-cpp_link_args = ['-Wl,-z,max-page-size=16384']
+c_args = ['-ffunction-sections', '-fdata-sections']
+c_link_args = ['-Wl,--gc-sections', '-Wl,-z,max-page-size=16384']
+cpp_args = ['-ffunction-sections', '-fdata-sections']
+cpp_link_args = ['-Wl,--gc-sections', '-Wl,-z,max-page-size=16384']
 
 [host_machine]
 system = 'linux'

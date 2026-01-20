@@ -70,6 +70,9 @@ else
         if [[ "$HOST" == linux-arm64 ]]
         then
             export PKG_CONFIG_LIBDIR="/usr/lib/aarch64-linux-gnu/pkgconfig:/usr/share/pkgconfig"
+            # Add flags for Android/Termux TLS compatibility
+            export CFLAGS="$CFLAGS -ffunction-sections -fdata-sections"
+            export LDFLAGS="$LDFLAGS -Wl,--gc-sections -Wl,-z,max-page-size=16384"
         fi
     fi
 

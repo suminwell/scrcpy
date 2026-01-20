@@ -26,6 +26,13 @@ cd "$BUILD_DIR/$PROJECT_DIR"
 export CFLAGS='-O2'
 export CXXFLAGS="$CFLAGS"
 
+# For ARM64 Linux, add Android/Termux TLS compatibility flags
+if [[ "$HOST" == linux-arm64 ]]
+then
+    export CFLAGS="$CFLAGS -ffunction-sections -fdata-sections"
+    export LDFLAGS="$LDFLAGS -Wl,--gc-sections -Wl,-z,max-page-size=16384"
+fi
+
 if [[ -d "$DIRNAME" ]]
 then
     echo "'$PWD/$DIRNAME' already exists, not reconfigured"

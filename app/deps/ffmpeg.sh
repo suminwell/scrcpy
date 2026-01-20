@@ -141,6 +141,9 @@ else
                     --target-os=linux
                     --arch=aarch64
                     --pkg-config=pkg-config
+                    # Add flags for Android/Termux TLS compatibility
+                    --extra-cflags="-ffunction-sections -fdata-sections"
+                    --extra-ldflags="-Wl,--gc-sections -Wl,-z,max-page-size=16384"
                 )
                 # For ARM64 cross-compilation, set PKG_CONFIG_LIBDIR to specify all search paths
                 # This includes both our compiled dependencies (dav1d) and system ARM64 libraries (libv4l2)
