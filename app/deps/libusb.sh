@@ -26,6 +26,37 @@ cd "$BUILD_DIR/$PROJECT_DIR"
 export CFLAGS='-O2'
 export CXXFLAGS="$CFLAGS"
 
+# For Termux (Android), use NDK compilers
+if [[ "$HOST" == termux-arm64 ]]
+then
+    export CC=aarch64-linux-android21-clang
+    export CXX=aarch64-linux-android21-clang++
+    export AR=llvm-ar
+    export RANLIB=llvm-ranlib
+    export STRIP=llvm-strip
+elif [[ "$HOST" == termux-arm ]]
+then
+    export CC=armv7a-linux-androideabi21-clang
+    export CXX=armv7a-linux-androideabi21-clang++
+    export AR=llvm-ar
+    export RANLIB=llvm-ranlib
+    export STRIP=llvm-strip
+elif [[ "$HOST" == termux-x86_64 ]]
+then
+    export CC=x86_64-linux-android21-clang
+    export CXX=x86_64-linux-android21-clang++
+    export AR=llvm-ar
+    export RANLIB=llvm-ranlib
+    export STRIP=llvm-strip
+elif [[ "$HOST" == termux-x86 ]]
+then
+    export CC=i686-linux-android21-clang
+    export CXX=i686-linux-android21-clang++
+    export AR=llvm-ar
+    export RANLIB=llvm-ranlib
+    export STRIP=llvm-strip
+fi
+
 if [[ -d "$DIRNAME" ]]
 then
     echo "'$PWD/$DIRNAME' already exists, not reconfigured"

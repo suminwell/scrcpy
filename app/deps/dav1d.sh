@@ -55,6 +55,30 @@ else
                 )
                 ;;
 
+            termux-arm64)
+                conf+=(
+                    --cross-file="$PATCHES_DIR/dav1d-termux-arm64.meson"
+                )
+                ;;
+
+            termux-arm)
+                conf+=(
+                    --cross-file="$PATCHES_DIR/dav1d-termux-arm.meson"
+                )
+                ;;
+
+            termux-x86_64)
+                conf+=(
+                    --cross-file="$PATCHES_DIR/dav1d-termux-x86_64.meson"
+                )
+                ;;
+
+            termux-x86)
+                conf+=(
+                    --cross-file="$PATCHES_DIR/dav1d-termux-x86.meson"
+                )
+                ;;
+
             *)
                 echo "Unsupported host: $HOST" >&2
                 exit 1

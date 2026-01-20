@@ -88,6 +88,12 @@ else
             --enable-outdev=v4l2
             --enable-encoder=rawvideo
         )
+    elif [[ "$HOST" == termux-* ]]
+    then
+        # Termux doesn't have V4L2
+        conf+=(
+            --disable-avdevice
+        )
     else
         # libavdevice is only used for V4L2 on Linux
         conf+=(
@@ -110,15 +116,12 @@ else
 
     if [[ "$BUILD_TYPE" == cross ]]
     then
-        conf+=(
-            --enable-cross-compile
-            --cross-prefix="${HOST_TRIPLET}-"
-            --cc="${HOST_TRIPLET}-gcc"
-        )
-
         case "$HOST" in
             win32)
                 conf+=(
+                    --enable-cross-compile
+                    --cross-prefix="${HOST_TRIPLET}-"
+                    --cc="${HOST_TRIPLET}-gcc"
                     --target-os=mingw32
                     --arch=x86
                 )
@@ -126,8 +129,67 @@ else
 
             win64)
                 conf+=(
+                    --enable-cross-compile
+                    --cross-prefix="${HOST_TRIPLET}-"
+                    --cc="${HOST_TRIPLET}-gcc"
                     --target-os=mingw32
                     --arch=x86_64
+                )
+                ;;
+
+            termux-arm64)
+                conf+=(
+                    --enable-cross-compile
+                    --target-os=linux
+                    --arch=aarch64
+                    --cc=aarch64-linux-android21-clang
+                    --cxx=aarch64-linux-android21-clang++
+                    --ar=llvm-ar
+                    --ranlib=llvm-ranlib
+                    --strip=llvm-strip
+                    --pkg-config=pkg-config
+                )
+                ;;
+
+            termux-arm)
+                conf+=(
+                    --enable-cross-compile
+                    --target-os=linux
+                    --arch=arm
+                    --cc=armv7a-linux-androideabi21-clang
+                    --cxx=armv7a-linux-androideabi21-clang++
+                    --ar=llvm-ar
+                    --ranlib=llvm-ranlib
+                    --strip=llvm-strip
+                    --pkg-config=pkg-config
+                )
+                ;;
+
+            termux-x86_64)
+                conf+=(
+                    --enable-cross-compile
+                    --target-os=linux
+                    --arch=x86_64
+                    --cc=x86_64-linux-android21-clang
+                    --cxx=x86_64-linux-android21-clang++
+                    --ar=llvm-ar
+                    --ranlib=llvm-ranlib
+                    --strip=llvm-strip
+                    --pkg-config=pkg-config
+                )
+                ;;
+
+            termux-x86)
+                conf+=(
+                    --enable-cross-compile
+                    --target-os=linux
+                    --arch=x86
+                    --cc=i686-linux-android21-clang
+                    --cxx=i686-linux-android21-clang++
+                    --ar=llvm-ar
+                    --ranlib=llvm-ranlib
+                    --strip=llvm-strip
+                    --pkg-config=pkg-config
                 )
                 ;;
 

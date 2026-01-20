@@ -35,6 +35,18 @@ process_args() {
         elif [[ "$HOST" = win64 ]]
         then
             HOST_TRIPLET=x86_64-w64-mingw32
+        elif [[ "$HOST" = termux-arm64 ]]
+        then
+            HOST_TRIPLET=aarch64-linux-android
+        elif [[ "$HOST" = termux-arm ]]
+        then
+            HOST_TRIPLET=armv7a-linux-androideabi
+        elif [[ "$HOST" = termux-x86_64 ]]
+        then
+            HOST_TRIPLET=x86_64-linux-android
+        elif [[ "$HOST" = termux-x86 ]]
+        then
+            HOST_TRIPLET=i686-linux-android
         else
             echo "Unsupported cross-build to host: $HOST" >&2
             exit 1

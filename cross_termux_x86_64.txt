@@ -1,0 +1,22 @@
+# Meson cross-compilation file for Android x86_64 (Termux)
+# This uses Android NDK instead of standard Linux cross-compiler
+
+[binaries]
+c = 'x86_64-linux-android21-clang'
+cpp = 'x86_64-linux-android21-clang++'
+ar = 'llvm-ar'
+strip = 'llvm-strip'
+pkg-config = 'pkg-config'
+
+[built-in options]
+c_args = []
+c_link_args = []
+cpp_args = []
+cpp_link_args = []
+
+[host_machine]
+system = 'linux'
+cpu_family = 'x86_64'
+cpu = 'x86_64'
+endian = 'little'
+

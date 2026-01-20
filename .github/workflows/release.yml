@@ -185,6 +185,130 @@ jobs:
           name: build-win64-intermediate
           path: release/work/build-win64/dist-tar/
 
+  build-termux-arm64:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Android NDK
+        run: release/setup_android_ndk.sh
+
+      - name: Install dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y meson ninja-build nasm pkg-config
+
+      - name: Build
+        run: release/build_termux.sh arm64
+
+      # upload-artifact does not preserve permissions
+      - name: Tar
+        run: |
+            cd release/work/build-termux-arm64
+            mkdir dist-tar
+            cd dist-tar
+            tar -C .. -cvf dist.tar.gz dist/
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-termux-arm64-intermediate
+          path: release/work/build-termux-arm64/dist-tar/
+
+  build-termux-arm:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Android NDK
+        run: release/setup_android_ndk.sh
+
+      - name: Install dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y meson ninja-build nasm pkg-config
+
+      - name: Build
+        run: release/build_termux.sh arm
+
+      # upload-artifact does not preserve permissions
+      - name: Tar
+        run: |
+            cd release/work/build-termux-arm
+            mkdir dist-tar
+            cd dist-tar
+            tar -C .. -cvf dist.tar.gz dist/
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-termux-arm-intermediate
+          path: release/work/build-termux-arm/dist-tar/
+
+  build-termux-x86_64:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Android NDK
+        run: release/setup_android_ndk.sh
+
+      - name: Install dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y meson ninja-build nasm pkg-config
+
+      - name: Build
+        run: release/build_termux.sh x86_64
+
+      # upload-artifact does not preserve permissions
+      - name: Tar
+        run: |
+            cd release/work/build-termux-x86_64
+            mkdir dist-tar
+            cd dist-tar
+            tar -C .. -cvf dist.tar.gz dist/
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-termux-x86_64-intermediate
+          path: release/work/build-termux-x86_64/dist-tar/
+
+  build-termux-x86:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Android NDK
+        run: release/setup_android_ndk.sh
+
+      - name: Install dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y meson ninja-build nasm pkg-config
+
+      - name: Build
+        run: release/build_termux.sh x86
+
+      # upload-artifact does not preserve permissions
+      - name: Tar
+        run: |
+            cd release/work/build-termux-x86
+            mkdir dist-tar
+            cd dist-tar
+            tar -C .. -cvf dist.tar.gz dist/
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-termux-x86-intermediate
+          path: release/work/build-termux-x86/dist-tar/
+
   build-macos-aarch64:
     runs-on: macos-latest
     steps:
@@ -415,6 +539,150 @@ jobs:
           name: release-macos-aarch64
           path: release/output/
 
+  package-termux-arm64:
+    needs:
+      - build-scrcpy-server
+      - build-termux-arm64
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download scrcpy-server
+        uses: actions/download-artifact@v4
+        with:
+          name: scrcpy-server
+          path: release/work/build-server/server/
+
+      - name: Download build-termux-arm64
+        uses: actions/download-artifact@v4
+        with:
+          name: build-termux-arm64-intermediate
+          path: release/work/build-termux-arm64/dist-tar/
+
+      # upload-artifact does not preserve permissions
+      - name: Detar
+        run: |
+            cd release/work/build-termux-arm64
+            tar xf dist-tar/dist.tar.gz
+
+      - name: Package
+        run: release/package_client.sh termux-arm64 tar.gz
+
+      - name: Upload release
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-termux-arm64
+          path: release/output/
+
+  package-termux-arm:
+    needs:
+      - build-scrcpy-server
+      - build-termux-arm
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download scrcpy-server
+        uses: actions/download-artifact@v4
+        with:
+          name: scrcpy-server
+          path: release/work/build-server/server/
+
+      - name: Download build-termux-arm
+        uses: actions/download-artifact@v4
+        with:
+          name: build-termux-arm-intermediate
+          path: release/work/build-termux-arm/dist-tar/
+
+      # upload-artifact does not preserve permissions
+      - name: Detar
+        run: |
+            cd release/work/build-termux-arm
+            tar xf dist-tar/dist.tar.gz
+
+      - name: Package
+        run: release/package_client.sh termux-arm tar.gz
+
+      - name: Upload release
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-termux-arm
+          path: release/output/
+
+  package-termux-x86_64:
+    needs:
+      - build-scrcpy-server
+      - build-termux-x86_64
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download scrcpy-server
+        uses: actions/download-artifact@v4
+        with:
+          name: scrcpy-server
+          path: release/work/build-server/server/
+
+      - name: Download build-termux-x86_64
+        uses: actions/download-artifact@v4
+        with:
+          name: build-termux-x86_64-intermediate
+          path: release/work/build-termux-x86_64/dist-tar/
+
+      # upload-artifact does not preserve permissions
+      - name: Detar
+        run: |
+            cd release/work/build-termux-x86_64
+            tar xf dist-tar/dist.tar.gz
+
+      - name: Package
+        run: release/package_client.sh termux-x86_64 tar.gz
+
+      - name: Upload release
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-termux-x86_64
+          path: release/output/
+
+  package-termux-x86:
+    needs:
+      - build-scrcpy-server
+      - build-termux-x86
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download scrcpy-server
+        uses: actions/download-artifact@v4
+        with:
+          name: scrcpy-server
+          path: release/work/build-server/server/
+
+      - name: Download build-termux-x86
+        uses: actions/download-artifact@v4
+        with:
+          name: build-termux-x86-intermediate
+          path: release/work/build-termux-x86/dist-tar/
+
+      # upload-artifact does not preserve permissions
+      - name: Detar
+        run: |
+            cd release/work/build-termux-x86
+            tar xf dist-tar/dist.tar.gz
+
+      - name: Package
+        run: release/package_client.sh termux-x86 tar.gz
+
+      - name: Upload release
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-termux-x86
+          path: release/output/
+
   package-macos-x86_64:
     needs:
       - build-scrcpy-server
@@ -455,6 +723,10 @@ jobs:
     needs:
       - build-scrcpy-server
       - package-linux-x86_64
+      - package-termux-arm64
+      - package-termux-arm
+      - package-termux-x86_64
+      - package-termux-x86
       - package-win32
       - package-win64
       - package-macos-aarch64
@@ -500,6 +772,30 @@ jobs:
           name: release-macos-x86_64
           path: release/output/
 
+      - name: Download release-termux-arm64
+        uses: actions/download-artifact@v4
+        with:
+          name: release-termux-arm64
+          path: release/output/
+
+      - name: Download release-termux-arm
+        uses: actions/download-artifact@v4
+        with:
+          name: release-termux-arm
+          path: release/output/
+
+      - name: Download release-termux-x86_64
+        uses: actions/download-artifact@v4
+        with:
+          name: release-termux-x86_64
+          path: release/output/
+
+      - name: Download release-termux-x86
+        uses: actions/download-artifact@v4
+        with:
+          name: release-termux-x86
+          path: release/output/
+
       - name: Package server
         run: release/package_server.sh
 
@@ -511,3 +807,14 @@ jobs:
         with:
           name: scrcpy-release-${{ env.VERSION }}
           path: release/output
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ env.VERSION }}
+          name: scrcpy ${{ env.VERSION }}
+          draft: false
+          prerelease: false
+          files: release/output/*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -1,0 +1,15 @@
+# Meson cross-compilation file for dav1d on Android ARM64
+# This file will be used by dav1d build script
+
+[binaries]
+c = 'aarch64-linux-android21-clang'
+cpp = 'aarch64-linux-android21-clang++'
+ar = 'llvm-ar'
+strip = 'llvm-strip'
+
+[host_machine]
+system = 'linux'
+cpu_family = 'aarch64'
+cpu = 'aarch64'
+endian = 'little'
+

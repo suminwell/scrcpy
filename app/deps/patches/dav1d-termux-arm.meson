@@ -1,0 +1,14 @@
+# Meson cross-compilation file for dav1d on Termux ARMv7a
+
+[binaries]
+c = 'armv7a-linux-androideabi21-clang'
+cpp = 'armv7a-linux-androideabi21-clang++'
+ar = 'llvm-ar'
+strip = 'llvm-strip'
+
+[host_machine]
+system = 'linux'
+cpu_family = 'arm'
+cpu = 'armv7a'
+endian = 'little'
+
