@@ -146,6 +146,21 @@ else
                 # Note: When PKG_CONFIG_LIBDIR is set, PKG_CONFIG_PATH is ignored, so we must include
                 # all paths in PKG_CONFIG_LIBDIR
                 export PKG_CONFIG_LIBDIR="$INSTALL_DIR/$DIRNAME/lib/pkgconfig:/usr/lib/aarch64-linux-gnu/pkgconfig:/usr/share/pkgconfig"
+
+                # Debug: Test pkg-config before running configure
+                echo "=== Testing pkg-config for dav1d ==="
+                echo "PKG_CONFIG_LIBDIR=$PKG_CONFIG_LIBDIR"
+                echo "Listing .pc files in install directory:"
+                ls -la "$INSTALL_DIR/$DIRNAME/lib/pkgconfig/" || echo "Directory not found"
+                echo "Testing pkg-config --exists dav1d:"
+                pkg-config --exists dav1d && echo "SUCCESS: dav1d found" || echo "FAILED: dav1d not found"
+                echo "Testing pkg-config --modversion dav1d:"
+                pkg-config --modversion dav1d || echo "Cannot get version"
+                echo "Testing pkg-config --cflags dav1d:"
+                pkg-config --cflags dav1d || echo "Cannot get cflags"
+                echo "Testing pkg-config --libs dav1d:"
+                pkg-config --libs dav1d || echo "Cannot get libs"
+                echo "=== End of pkg-config test ==="
                 ;;
 
             *)
