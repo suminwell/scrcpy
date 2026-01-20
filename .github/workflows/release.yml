@@ -154,6 +154,7 @@ jobs:
              gcc-aarch64-linux-gnu g++-aarch64-linux-gnu \
              pkg-config \
              zlib1g-dev:arm64 \
+             libudev-dev:arm64 \
              libv4l-dev:arm64 \
              libwayland-dev:arm64 \
              libxkbcommon-dev:arm64 \
