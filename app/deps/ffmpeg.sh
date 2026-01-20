@@ -140,35 +140,11 @@ else
                 conf+=(
                     --target-os=linux
                     --arch=aarch64
+                    --pkg-config=pkg-config
                 )
-                # For ARM64 cross-compilation, use PKG_CONFIG_LIBDIR to specify all search paths
+                # For ARM64 cross-compilation, set PKG_CONFIG_LIBDIR to specify all search paths
                 # This includes both our compiled dependencies (dav1d) and system ARM64 libraries (libv4l2)
-                # Note: When PKG_CONFIG_LIBDIR is set, PKG_CONFIG_PATH is ignored, so we must include
-                # all paths in PKG_CONFIG_LIBDIR
                 export PKG_CONFIG_LIBDIR="$INSTALL_DIR/$DIRNAME/lib/pkgconfig:/usr/lib/aarch64-linux-gnu/pkgconfig:/usr/share/pkgconfig"
-
-                # Debug: Test pkg-config before running configure
-                echo "=== Testing pkg-config for dav1d ==="
-                echo "PKG_CONFIG_LIBDIR=$PKG_CONFIG_LIBDIR"
-                echo ""
-                echo "Content of dav1d.pc:"
-                cat "$INSTALL_DIR/$DIRNAME/lib/pkgconfig/dav1d.pc" || echo "File not found"
-                echo ""
-                echo "Testing pkg-config --exists dav1d:"
-                pkg-config --exists dav1d && echo "SUCCESS" || echo "FAILED"
-                echo ""
-                echo "Testing pkg-config --modversion dav1d:"
-                pkg-config --modversion dav1d || echo "FAILED"
-                echo ""
-                echo "Testing pkg-config --cflags --static dav1d:"
-                pkg-config --cflags --static dav1d || echo "FAILED"
-                echo ""
-                echo "Testing pkg-config --libs --static dav1d:"
-                pkg-config --libs --static dav1d || echo "FAILED"
-                echo ""
-                echo "Testing with PKG_CONFIG_ALLOW_SYSTEM_CFLAGS=1:"
-                PKG_CONFIG_ALLOW_SYSTEM_CFLAGS=1 pkg-config --cflags --static dav1d || echo "FAILED"
-                echo "=== End of pkg-config test ==="
                 ;;
 
             *)
