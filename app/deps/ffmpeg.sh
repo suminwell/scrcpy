@@ -139,6 +139,15 @@ else
                 # Set PKG_CONFIG_LIBDIR to find ARM64 libraries (for libv4l2)
                 # Also include our install directory for dav1d
                 export PKG_CONFIG_LIBDIR="$INSTALL_DIR/$DIRNAME/lib/pkgconfig:/usr/lib/aarch64-linux-gnu/pkgconfig:/usr/share/pkgconfig"
+
+                # Debug: Check if dav1d.pc exists
+                echo "=== Checking for dav1d.pc ==="
+                echo "PKG_CONFIG_LIBDIR=$PKG_CONFIG_LIBDIR"
+                echo "Looking for dav1d.pc in:"
+                ls -la "$INSTALL_DIR/$DIRNAME/lib/pkgconfig/" || echo "Directory does not exist"
+                echo "Trying pkg-config:"
+                pkg-config --exists dav1d && echo "dav1d found by pkg-config" || echo "dav1d NOT found by pkg-config"
+                pkg-config --modversion dav1d || echo "Cannot get dav1d version"
                 ;;
 
             *)
