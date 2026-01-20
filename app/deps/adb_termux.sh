@@ -58,13 +58,14 @@ cd "$EXTRACT_DIR"
 # Extract data.tar.xz which contains the actual files
 tar -xf data.tar.xz
 
-# Install to standard location
+# Install to standard location (adb directly in the directory, not in bin/)
 INSTALL_DIR="$WORK_DIR/install/adb-termux-${ARCH}"
 rm -rf "$INSTALL_DIR"
-mkdir -p "$INSTALL_DIR/bin"
+mkdir -p "$INSTALL_DIR"
 
 # Copy adb binary (it's in data/data/com.termux/files/usr/bin/adb)
-cp data/data/com.termux/files/usr/bin/adb "$INSTALL_DIR/bin/"
+# Put it directly in INSTALL_DIR, not in a bin/ subdirectory
+cp data/data/com.termux/files/usr/bin/adb "$INSTALL_DIR/"
 
 echo "adb for Termux $ARCH extracted successfully to $INSTALL_DIR"
 
