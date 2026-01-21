@@ -1,0 +1,28 @@
+# 构建产物
+dist/
+release/work/
+release/output/
+build/
+
+# Git
+.git/
+.github/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# macOS
+.DS_Store
+
+# 文档（构建时不需要）
+*.md
+!README.md
+
+# 临时文件
+*.log
+*.tmp
+
