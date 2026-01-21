@@ -31,7 +31,7 @@ meson setup "$TERMUX_BUILD_DIR" \
     --cross-file=cross_termux_$ARCH.txt \
     --pkg-config-path="$DEPS_INSTALL_DIR/lib/pkgconfig" \
     -Dc_args="-I$DEPS_INSTALL_DIR/include" \
-    -Dc_link_args="-L$DEPS_INSTALL_DIR/lib" \
+    -Dc_link_args="-L$DEPS_INSTALL_DIR/lib -lOpenSLES -llog -landroid" \
     --buildtype=release \
     --strip \
     -Db_lto=true \
